@@ -1,0 +1,1241 @@
+/* ==========================================================================
+   Mericet — stylesheet (v2)
+   Near-black + one brand-blue accent, used sparingly. A soft-serif display
+   face for warmth, a structured sans for body/UI. One real 3D moment in
+   the hero; everything after it is quiet, plain, and type-led.
+   ========================================================================== */
+
+/* ---- Design tokens ---- */
+:root {
+  /* surfaces — near-black, not navy */
+  --bg: #08090c;
+  --bg-raised: #0e1013;
+  --line: rgba(255, 255, 255, 0.1);
+  --line-soft: rgba(255, 255, 255, 0.06);
+  --line-strong: rgba(255, 255, 255, 0.36);
+
+  /* ink — warm neutral, not blue-white */
+  --ink: #f1efea;
+  --ink-dim: #cbc8c1;
+  --muted: #9a978f;
+  --muted-2: #87837b;
+
+  /* the one brand color — spent on the logo, the live dot, links, the 3D scene */
+  --accent: #2f6fed;
+  --accent-2: #6fd0ff;
+  --accent-soft: rgba(47, 111, 237, 0.14);
+  --accent-line: rgba(111, 208, 255, 0.35);
+
+  /* type */
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", sans-serif;
+
+  --fs-xs: clamp(0.76rem, 0.74rem + 0.1vw, 0.83rem);
+  --fs-sm: clamp(0.88rem, 0.85rem + 0.15vw, 0.97rem);
+  --fs-base: clamp(1rem, 0.96rem + 0.18vw, 1.06rem);
+  --fs-md: clamp(1.15rem, 1.05rem + 0.4vw, 1.4rem);
+  --fs-lg: clamp(1.55rem, 1.3rem + 1vw, 2.3rem);
+  --fs-xl: clamp(2.2rem, 1.6rem + 2.4vw, 3.6rem);
+  --fs-2xl: clamp(2.9rem, 1.9rem + 3.8vw, 5.2rem);
+  --fs-3xl: clamp(3.6rem, 1.6rem + 8vw, 9rem);
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4.5rem;
+  --space-6: 7.5rem;
+  --space-7: 10rem;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.25, 0.8, 0.4, 1);
+  --content-width: 76rem;
+  --measure: 60ch;
+}
+
+/* ---- Reset ---- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+h1,
+h2 {
+  font-family: var(--font-display);
+  font-optical-sizing: auto;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+}
+
+/* h3/h4 stay in the body face on purpose — the display serif only earns
+   its place at real headline sizes (h1/h2, the tagline, the manifesto).
+   Using it for small labels (team names, badge digits) is what read as
+   a mistake rather than a choice. */
+h3,
+h4 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.3;
+}
+
+em {
+  font-family: var(--font-display);
+  font-style: italic;
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---- Layout helpers ---- */
+.wrap {
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding-inline: var(--space-3);
+}
+
+section {
+  position: relative;
+  padding-block: var(--space-6);
+  scroll-margin-top: 5.5rem;
+}
+
+.section-head {
+  max-width: 34rem;
+  margin-bottom: var(--space-5);
+}
+
+.section-head h2 {
+  font-size: var(--fs-xl);
+  font-weight: 500;
+}
+
+.section-head p {
+  margin-top: var(--space-2);
+  color: var(--muted);
+  font-size: var(--fs-md);
+  max-width: var(--measure);
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  background: var(--ink);
+  color: var(--bg);
+  padding: 0.8em 1.2em;
+  border-radius: var(--radius-sm);
+  z-index: 999;
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  left: var(--space-3);
+  top: var(--space-3);
+}
+
+/* ---- Buttons: solid ink or plain outline, nothing gradient ---- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  padding: 0.9em 1.6em;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: var(--fs-sm);
+  white-space: nowrap;
+  transition: transform 0.4s var(--ease), background 0.4s var(--ease), border-color 0.4s var(--ease), opacity 0.4s var(--ease);
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  opacity: 0.88;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink-dim);
+  border: 1px solid var(--line-strong);
+}
+
+.btn-ghost:hover {
+  border-color: var(--ink-dim);
+  color: var(--ink);
+}
+
+/* ==========================================================================
+   Header / Nav
+   ========================================================================== */
+
+.site-header {
+  position: fixed;
+  inset-inline: 0;
+  top: 0;
+  z-index: 100;
+  padding-block: var(--space-3);
+  transition: padding 0.4s var(--ease), background 0.4s var(--ease), border-color 0.4s var(--ease);
+  border-bottom: 1px solid transparent;
+}
+
+.site-header.is-scrolled {
+  padding-block: 0.85rem;
+  background: rgba(8, 9, 12, 0.78);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.site-header .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-md);
+  letter-spacing: -0.01em;
+}
+
+.brand img {
+  height: 26px;
+  width: auto;
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.main-nav ul {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.main-nav a:not(.btn) {
+  font-size: var(--fs-sm);
+  color: var(--muted);
+  transition: color 0.25s var(--ease);
+  position: relative;
+  padding-block: 0.3em;
+}
+
+.main-nav a:not(.btn)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 100%;
+  bottom: 0;
+  height: 1px;
+  background: var(--accent-2);
+  transition: right 0.3s var(--ease);
+}
+
+.main-nav a:not(.btn):hover {
+  color: var(--ink);
+}
+
+.main-nav a:not(.btn):hover::after {
+  right: 0;
+}
+
+.nav-toggle {
+  display: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line-strong);
+}
+
+.nav-toggle span,
+.nav-toggle span::before,
+.nav-toggle span::after {
+  content: "";
+  display: block;
+  width: 16px;
+  height: 1.5px;
+  background: var(--ink);
+  position: relative;
+  transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+
+.nav-toggle span::before {
+  position: absolute;
+  top: -5px;
+}
+
+.nav-toggle span::after {
+  position: absolute;
+  top: 5px;
+}
+
+.nav-toggle[aria-expanded="true"] span {
+  background: transparent;
+}
+
+.nav-toggle[aria-expanded="true"] span::before {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] span::after {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+@media (max-width: 860px) {
+  .nav-toggle {
+    display: inline-flex;
+  }
+
+  .main-nav {
+    position: fixed;
+    inset: 0;
+    top: 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    background: rgba(8, 9, 12, 0.98);
+    backdrop-filter: blur(10px);
+    transform: translateY(-100%);
+    transition: transform 0.45s var(--ease);
+    padding: var(--space-4);
+  }
+
+  .main-nav.is-open {
+    transform: translateY(0);
+  }
+
+  .main-nav ul {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .main-nav ul a {
+    font-size: var(--fs-lg);
+    font-family: var(--font-display);
+    color: var(--ink);
+  }
+
+  .main-nav .btn {
+    margin-top: var(--space-3);
+  }
+}
+
+/* ==========================================================================
+   Hero — the one big 3D / cinematic moment on the page
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding-top: calc(var(--space-6) + 2rem);
+  padding-bottom: var(--space-5);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
+.hero::after {
+  /* soft vignette so type stays readable over the scene at any position */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8, 9, 12, 0.15) 0%, rgba(8, 9, 12, 0.55) 78%, var(--bg) 100%),
+    linear-gradient(90deg, var(--bg) 0%, rgba(8, 9, 12, 0.35) 32%, transparent 55%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.hero .wrap {
+  width: 100%;
+}
+
+.hero-content {
+  max-width: 44rem;
+}
+
+.hero-content > * {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: hero-in 1s var(--ease) forwards;
+}
+
+.hero h1 {
+  animation-delay: 0.05s;
+}
+.hero-tagline {
+  animation-delay: 0.22s;
+}
+.hero-sub {
+  animation-delay: 0.36s;
+}
+.hero-actions {
+  animation-delay: 0.5s;
+}
+.hero-note {
+  animation-delay: 0.64s;
+}
+
+@keyframes hero-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-content > * {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero h1 {
+  font-size: var(--fs-3xl);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 0.98;
+}
+
+.hero-tagline {
+  margin-top: var(--space-3);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--fs-lg);
+  color: var(--ink-dim);
+  max-width: 22ch;
+}
+
+.hero-sub {
+  margin-top: var(--space-3);
+  font-size: var(--fs-md);
+  color: var(--muted);
+  max-width: 42ch;
+}
+
+.hero-actions {
+  margin-top: var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.hero-note {
+  margin-top: var(--space-4);
+  color: var(--muted-2);
+  font-size: var(--fs-xs);
+}
+
+.hero-note .dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-2);
+  box-shadow: 0 0 10px 2px var(--accent-line);
+  margin-right: 0.6em;
+}
+
+.scroll-cue {
+  position: absolute;
+  left: var(--space-3);
+  bottom: var(--space-3);
+  display: flex;
+  align-items: center;
+  gap: 0.7em;
+  color: var(--muted-2);
+  font-size: var(--fs-xs);
+}
+
+.scroll-cue .line {
+  width: 28px;
+  height: 1px;
+  background: var(--muted-2);
+  position: relative;
+  overflow: hidden;
+}
+
+.scroll-cue .line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--accent-2);
+  transform: translateX(-100%);
+  animation: cue-sweep 2.6s var(--ease) infinite;
+}
+
+@keyframes cue-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ==========================================================================
+   Pitch (plain editorial text, no card)
+   ========================================================================== */
+
+.pitch .wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.25fr);
+  gap: var(--space-5);
+}
+
+.pitch h2 {
+  font-size: var(--fs-lg);
+  font-weight: 400;
+  font-style: italic;
+  max-width: 11ch;
+  position: sticky;
+  top: 7rem;
+  color: var(--ink-dim);
+}
+
+.pitch-body p {
+  font-size: var(--fs-md);
+  color: var(--ink-dim);
+  max-width: var(--measure);
+}
+
+.pitch-body p + p {
+  margin-top: var(--space-3);
+}
+
+.pitch-body strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+@media (max-width: 860px) {
+  .pitch .wrap {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  .pitch h2 {
+    position: static;
+    max-width: none;
+  }
+}
+
+/* ==========================================================================
+   Manifesto — their own words, word-by-word reveal
+   ========================================================================== */
+
+.manifesto {
+  text-align: center;
+}
+
+.manifesto .wrap {
+  max-width: 52rem;
+}
+
+.manifesto p {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: var(--fs-2xl);
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.manifesto .w {
+  display: inline-block;
+  opacity: 0.16;
+  filter: blur(3px);
+  transition: opacity 0.7s var(--ease), filter 0.7s var(--ease);
+  transition-delay: calc(var(--i, 0) * 22ms);
+}
+
+.manifesto.is-visible .w {
+  opacity: 1;
+  filter: blur(0);
+}
+
+.manifesto-tag {
+  display: inline-block;
+  margin-top: var(--space-4);
+  font-size: var(--fs-sm);
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+/* ==========================================================================
+   Problem rows — plain numbered list, no boxes
+   ========================================================================== */
+
+.problem-row {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  gap: var(--space-4);
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--line);
+  transform: perspective(1200px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform 0.3s var(--ease);
+}
+
+.problem-row:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.problem-num {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 1.9rem + 1.8vw, 3.6rem);
+  font-weight: 600;
+  color: var(--muted-2);
+  line-height: 1;
+  transition: color 0.4s var(--ease);
+}
+
+.problem-row:hover .problem-num {
+  color: var(--accent-2);
+}
+
+.problem-content h3 {
+  font-size: var(--fs-lg);
+  margin-bottom: 0.5em;
+}
+
+.problem-content p {
+  color: var(--muted);
+  font-size: var(--fs-base);
+  max-width: var(--measure);
+}
+
+@media (max-width: 640px) {
+  .problem-row {
+    grid-template-columns: 3.2rem minmax(0, 1fr);
+    gap: var(--space-2);
+  }
+}
+
+/* ==========================================================================
+   Solution / vision — plain text with a drop cap, no card
+   ========================================================================== */
+
+.solution .wrap {
+  max-width: 46rem;
+}
+
+.solution-text p {
+  font-size: var(--fs-md);
+  color: var(--ink-dim);
+  max-width: var(--measure);
+}
+
+.solution-text p + p {
+  margin-top: var(--space-3);
+}
+
+/* ==========================================================================
+   Team — plain divided rows, no card boxes
+   ========================================================================== */
+
+.team-row {
+  display: grid;
+  grid-template-columns: 3.5rem minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: var(--space-3);
+  align-items: baseline;
+  padding-block: var(--space-4);
+  border-top: 1px solid var(--line);
+  transform: perspective(1200px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform 0.3s var(--ease), background 0.4s var(--ease);
+}
+
+.team-row:hover {
+  background: linear-gradient(90deg, rgba(47, 111, 237, 0.05), transparent 60%);
+}
+
+.team-list .team-row:last-child {
+  border-bottom: 1px solid var(--line);
+}
+
+.team-mark {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--accent-2);
+  align-self: center;
+  box-shadow: 0 0 0 0 transparent;
+  transition: box-shadow 0.4s var(--ease), border-color 0.4s var(--ease);
+}
+
+.team-row:hover .team-mark {
+  border-color: var(--accent-line);
+  box-shadow: 0 0 16px 2px rgba(47, 111, 237, 0.28);
+}
+
+.team-row h3 {
+  font-size: var(--fs-md);
+}
+
+.team-role {
+  color: var(--muted-2);
+  font-size: var(--fs-xs);
+  margin-top: 0.3em;
+}
+
+.team-row p.team-desc {
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+
+.team-note {
+  margin-top: var(--space-4);
+  color: var(--muted-2);
+  font-size: var(--fs-sm);
+  max-width: var(--measure);
+}
+
+@media (max-width: 640px) {
+  .team-row {
+    grid-template-columns: 1fr;
+    gap: 0.5em;
+  }
+  .team-mark {
+    margin-bottom: 0.3em;
+  }
+}
+
+/* ==========================================================================
+   CTA / waitlist — plain full-bleed, underline inputs
+   ========================================================================== */
+
+.cta {
+  position: relative;
+}
+
+.cta::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(45% 60% at 85% 20%, var(--accent-soft), transparent 70%);
+  pointer-events: none;
+}
+
+.cta-inner {
+  max-width: 34rem;
+}
+
+.cta-copy h2 {
+  font-size: var(--fs-xl);
+  font-weight: 500;
+  max-width: 15ch;
+}
+
+.cta-copy p {
+  margin-top: var(--space-2);
+  color: var(--muted);
+  max-width: 42ch;
+}
+
+.cta-copy .btn {
+  margin-top: var(--space-4);
+}
+
+/* ==========================================================================
+   FAQ
+   ========================================================================== */
+
+.faq-list {
+  border-top: 1px solid var(--line);
+  max-width: var(--content-width);
+}
+
+.faq-item {
+  border-bottom: 1px solid var(--line);
+  padding-block: var(--space-2);
+}
+
+.faq-item summary {
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: var(--fs-md);
+  padding-block: var(--space-2);
+}
+
+.faq-num {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  color: var(--muted-2);
+  flex: none;
+  min-width: 1.7em;
+  transition: color 0.4s var(--ease);
+}
+
+.faq-item:hover .faq-num,
+.faq-item[open] .faq-num {
+  color: var(--accent-2);
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary .plus {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  position: relative;
+  margin-left: auto;
+}
+
+.faq-item summary .plus::before,
+.faq-item summary .plus::after {
+  content: "";
+  position: absolute;
+  background: var(--ink-dim);
+  transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+}
+
+.faq-item summary .plus::before {
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: 1.5px;
+  transform: translateY(-50%);
+}
+
+.faq-item summary .plus::after {
+  left: 50%;
+  top: 0;
+  width: 1.5px;
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+.faq-item[open] summary .plus::after {
+  transform: translateX(-50%) rotate(90deg);
+  opacity: 0;
+}
+
+.faq-item .faq-a {
+  color: var(--muted);
+  max-width: var(--measure);
+  padding-bottom: var(--space-2);
+  font-size: var(--fs-base);
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding-block: var(--space-5) var(--space-4);
+}
+
+.footer-top {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  padding-bottom: var(--space-4);
+}
+
+.footer-brand .brand {
+  margin-bottom: var(--space-2);
+}
+
+.footer-brand p {
+  color: var(--muted);
+  max-width: 32ch;
+  font-size: var(--fs-sm);
+}
+
+.footer-links {
+  display: flex;
+  gap: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.footer-links h4 {
+  font-size: var(--fs-xs);
+  color: var(--muted-2);
+  margin-bottom: var(--space-2);
+  font-weight: 500;
+  font-family: var(--font-body);
+}
+
+.footer-links ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6em;
+}
+
+.footer-links a {
+  color: var(--muted);
+  font-size: var(--fs-sm);
+  transition: color 0.25s var(--ease);
+}
+
+.footer-links a:hover {
+  color: var(--ink);
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+  color: var(--muted-2);
+  font-size: var(--fs-xs);
+}
+
+.social-links {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.social-links a {
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  transition: color 0.25s var(--ease), border-color 0.25s var(--ease);
+}
+
+.social-links a:hover {
+  color: var(--ink);
+  border-color: var(--accent-line);
+}
+
+.social-links svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* ---- reveal-on-scroll ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  filter: blur(4px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease), filter 0.8s var(--ease);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  .manifesto .w {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+/* ==========================================================================
+   Film grain — a fixed, non-interactive noise layer for tactile depth.
+   Pure CSS/SVG, no image asset to fetch.
+   ========================================================================== */
+
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  pointer-events: none;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grain-overlay {
+    opacity: 0.02;
+  }
+}
+
+/* ==========================================================================
+   Scroll progress, traced as the infinity mark itself instead of a bar.
+   Hidden until the visitor starts scrolling past the hero.
+   ========================================================================== */
+
+.progress-tracer {
+  position: fixed;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  z-index: 90;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+  pointer-events: none;
+}
+
+.progress-tracer.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.progress-tracer svg {
+  width: 26px;
+  height: 38px;
+  overflow: visible;
+  display: block;
+}
+
+@keyframes tracer-idle-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+}
+
+.progress-tracer.is-idle svg {
+  animation: tracer-idle-pulse 2.6s ease-in-out infinite;
+}
+
+.progress-tracer .track {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+
+.progress-tracer .fill {
+  fill: none;
+  stroke: var(--accent-2);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+}
+
+/* ==========================================================================
+   Custom cursor — fine-pointer devices only. A JS-added class on <body>
+   gates this, so if the script fails for any reason, the real cursor
+   simply never gets hidden.
+   ========================================================================== */
+
+body.custom-cursor-active,
+body.custom-cursor-active a,
+body.custom-cursor-active button,
+body.custom-cursor-active summary,
+body.custom-cursor-active input,
+body.custom-cursor-active [data-tilt] {
+  cursor: none;
+}
+
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.4px solid var(--accent-2);
+  pointer-events: none;
+  z-index: 999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.11s linear, width 0.25s var(--ease), height 0.25s var(--ease), border-color 0.25s var(--ease), background 0.25s var(--ease), opacity 0.25s var(--ease);
+  opacity: 0;
+  will-change: transform;
+}
+
+.custom-cursor.is-active {
+  opacity: 1;
+}
+
+.custom-cursor.is-hovering {
+  width: 40px;
+  height: 40px;
+  border-color: var(--ink);
+  background: rgba(111, 208, 255, 0.08);
+}
+
+/* ==========================================================================
+   Section mood — a quiet shift in tone from the problems (starker) into
+   the solution (a touch more open), so the page's feel makes the same
+   arc the words do.
+   ========================================================================== */
+
+/* ==========================================================================
+   Render deferral — below-the-fold sections skip layout/paint work until
+   they're actually near the viewport. Unsupported browsers just ignore
+   this; nothing depends on it.
+   ========================================================================== */
+
+#problem,
+.solution,
+#team,
+#faq {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+}
+
+#problem {
+  background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.16) 45%, transparent);
+}
+
+.solution {
+  background: radial-gradient(70% 55% at 50% 12%, rgba(47, 111, 237, 0.08), transparent 72%);
+}
+
+/* ==========================================================================
+   Closing bookend — the same mark the page opens with, quietly, once
+   more before the footer.
+   ========================================================================== */
+
+.bookend {
+  text-align: center;
+  padding-block: var(--space-4);
+}
+
+.bookend svg {
+  width: 22px;
+  height: 32px;
+  margin-inline: auto;
+  display: block;
+}
+
+.bookend svg path {
+  fill: none;
+  stroke: var(--accent-2);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+}
+
+.bookend p {
+  margin-top: var(--space-2);
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
